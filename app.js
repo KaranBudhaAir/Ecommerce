@@ -1,5 +1,6 @@
 require("dotenv").config({ path: "./config.env" });
 const express = require("express");
+const path = require("path");
 const cors = require("cors");
 const app = express();
 
@@ -51,6 +52,14 @@ app.use("/api", productRouter);
 
 //image
 app.use("/api", imageUploadRouter);
+
+//serve the React build in production (must come before the catch-all below)
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "client", "build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
 
 app.use("*", (req, res, next) => {
   return next(new appError(`no such ${req.originalUrl} in server`, 400));
