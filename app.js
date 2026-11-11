@@ -21,7 +21,7 @@ const imageUploadRouter = require("./route/imageRoute");
 
 app.use(compression());
 
-app.use(helmet());
+   app.use(helmet({ contentSecurityPolicy: false }));
 
 app.use(express.json({ limit: "10kb" }));
 app.use(dataSanitizer());
