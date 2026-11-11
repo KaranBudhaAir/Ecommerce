@@ -1,5 +1,4 @@
 const app=require('./app')
-const express=require('express')
 const database_uri=process.env.DATABASE_URI.replace('<password>',process.env.PASSWORD);
 const port=process.env.PORT
 const mongoose=require('mongoose')
@@ -22,15 +21,6 @@ mongoose.connect(database_uri,{
 }).then(()=>{
     console.log('database connected')
 })
-
-if(process.env.NODE_ENV==="production"){
-  app.use(express.static('client/build'))
-  app.get('*',(req,res)=>{
-    res.send(path.join(__dirname,'client','build','index.html'))
-  })
-}
-
-
 
 const server=app.listen(port,()=>{
     console.log(`server is listening at port ${port}`)
